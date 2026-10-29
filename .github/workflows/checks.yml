@@ -1,0 +1,18 @@
+name: DistSketch checks
+on: [push, pull_request]
+jobs:
+  generator:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python distribution.py test
+      - run: python distribution.py build-site
+      - run: python -m compileall -q src
+      - run: node --check src/distribution_drawing/web/app.js
+      - run: node --check src/distribution_drawing/web/export.js

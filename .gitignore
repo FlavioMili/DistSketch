@@ -1,0 +1,65 @@
+# Generated datasets and local engine state
+/outputs/
+/.cache/
+/.native-cache/
+/distribution*.txt
+/distribution*.csv
+/distribution*.bin
+/drawing*.json
+/generate_distribution*.py
+
+# Built static site and Python packages
+/dist/
+/build/
+*.egg-info/
+.eggs/
+
+# Python bytecode, environments and tooling
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.tox/
+.nox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Native compiler and linker output
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.exp
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+docs
+
+# Local settings, logs and temporary files
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+*.part
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini

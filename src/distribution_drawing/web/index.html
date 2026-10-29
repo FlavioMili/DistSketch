@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#24273a">
+  <title>DistSketch · Distribution editor</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <svg class="brand-icon" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><path d="M3 26C8 26 8 9 14 9s6 17 15 17" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/><path d="m21 5 5 3-8 12-5 2 1-5Z" fill="#24273a" stroke="#f5a97f" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <h1>Dist<span class="brand-accent">Sketch</span><span class="brand-subtitle">Distribution editor</span></h1>
+      </div>
+      <div class="header-actions">
+        <span class="badge" id="engineBadge">Connecting…</span>
+        <details class="file-menu">
+          <summary>Files <span aria-hidden="true">⌄</span></summary>
+          <div class="file-menu-content">
+            <button id="saveDrawing">Save drawing <span>JSON</span></button>
+            <label class="file-button" tabindex="0">Open drawing <span>JSON</span><input id="loadDrawing" type="file" accept=".json,application/json" hidden></label>
+            <button id="exportScript">Export generator <span>PY</span></button>
+          </div>
+        </details>
+      </div>
+    </header>
+
+    <section class="workspace" aria-label="Distribution workspace">
+      <section class="editor-panel" aria-label="Distribution editor">
+        <div class="editor-toolbar">
+          <h2 id="modeTitle">Draw profile</h2>
+          <div class="editor-tools">
+            <div class="segmented" role="group" aria-label="Editing mode">
+              <button id="drawMode" class="active" aria-pressed="true">Draw</button>
+              <button id="sandMode" aria-pressed="false">Sand</button>
+            </div>
+            <button id="clear" class="clear-button" title="Clear the distribution">Clear</button>
+          </div>
+        </div>
+        <div class="plot-wrap">
+          <span class="y-label">Frequency</span>
+          <canvas id="plot" aria-label="Distribution editor. Drag to draw or hold to pour sand."></canvas>
+          <div id="emptyState" class="empty-state">
+            <svg width="72" height="30" viewBox="0 0 72 30" aria-hidden="true"><path d="M1 28C12 28 15 3 23 3S33 28 42 28 52 12 60 12 66 28 71 28" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <h2>Sketch a distribution</h2>
+            <p>Draw on the canvas to begin.</p>
+            <button id="sampleProfile">Try a sample <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+        <div class="axis"><span id="minLabel">0</span><span>Key value</span><span id="maxLabel">255</span></div>
+        <div class="editor-footer">
+          <p id="hint">Drag across the plot to shape your distribution.</p>
+          <strong id="datasetSummary" title="Output element count; independent of drawing resolution.">0 values</strong>
+        </div>
+      </section>
+
+      <aside class="sidebar" aria-label="Dataset settings">
+        <section class="control-panel">
+          <div class="panel-intro"><span class="panel-dot"></span>Dataset settings</div>
+          <div class="control-section">
+            <h3>Key range</h3>
+            <div class="field-row">
+              <label for="min">Minimum<input id="min" type="number" value="0" step="1"></label>
+              <label for="max">Maximum<input id="max" type="number" value="255" step="1"></label>
+            </div>
+          </div>
+          <div class="control-section">
+            <div id="drawControls">
+              <h3>Dataset size</h3>
+              <label for="total">Elements<input id="total" type="number" min="1" max="2000000000" value="10000"></label>
+            </div>
+            <div id="sandControls" hidden>
+              <h3>Sand flow</h3>
+              <label for="grains">Grains per drop<input id="grains" type="number" min="1" max="2000000000" value="1000"></label>
+              <label class="range-label" for="spread">Spread <output id="spreadValue" for="spread">8%</output></label>
+              <input id="spread" type="range" min="0" max="30" value="8">
+            </div>
+          </div>
+          <div class="control-section export-section">
+            <h3>Output</h3>
+            <div class="field-row">
+              <label for="order">Order<select id="order"><option value="shuffled">Shuffled</option><option value="sorted">Sorted</option></select></label>
+              <label for="format">Format<select id="format"><option value="txt" selected>Text (.txt)</option><option value="csv">CSV (.csv)</option><option value="binary">Binary (.bin)</option></select></label>
+            </div>
+            <button id="download" class="primary">Generate dataset</button>
+            <p id="status" class="status" aria-live="polite">Draw a profile to get started.</p>
+            <p id="exportNote" class="sr-only">Checking the local engine…</p>
+          </div>
+        </section>
+
+        <section id="jobPanel" class="job-panel" aria-label="Generation status" hidden>
+          <div class="job-heading"><strong id="jobTitle">Preparing…</strong><button id="cancelJob" class="text-button">Cancel</button></div>
+          <progress id="jobProgress" max="1" value="0" aria-label="Dataset generation progress"></progress>
+          <p id="jobMessage" class="note" aria-live="polite"></p>
+          <p id="jobPath" class="job-path"></p>
+          <a id="downloadResult" class="result-link" hidden>Download a copy ↗</a>
+        </section>
+      </aside>
+    </section>
+  </main>
+  <script src="generator.js"></script>
+  <script src="sand.js"></script>
+  <script src="export.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
